@@ -1,0 +1,504 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>SkillBridge Prototype - Team Catalyst</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#F4F7FA;--card:#fff;--ink:#0B2545;--sub:#4A5568;--teal:#13A89E;--amber:#F4A300;--red:#E5243B;--line:#e2e8f0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1b2a;--card:#16283c;--ink:#f1f5f9;--sub:#a9b8c8;--line:#27405a}}
+:root[data-theme="dark"]{--bg:#0d1b2a;--card:#16283c;--ink:#f1f5f9;--sub:#a9b8c8;--line:#27405a}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Calibri,"Segoe UI","Noto Sans Devanagari","Noto Sans Tamil",Arial,sans-serif}
+:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.app{max-width:440px;margin:0 auto;min-height:100vh;padding:16px 16px 84px}
+.top{background:#0B2545;color:#fff;border-radius:16px;padding:16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top h1{margin:0;font-size:22px}.top p{margin:4px 0 0;font-size:13px;color:#cbd5e1}
+.note{font-size:12px;color:var(--sub);text-align:center;margin:0 0 10px}
+.langs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:20px;font-size:14px;cursor:pointer}
+.chip.big{padding:10px 16px;font-size:16px}
+.chip.on{background:var(--teal);border-color:var(--teal);color:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 10px;text-align:center;font-size:15px;font-weight:700;cursor:pointer;color:var(--ink)}
+.tile-wide{grid-column:1/-1}
+.tile span{display:block;font-size:30px;margin-bottom:6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:10px}
+.card h3{margin:0 0 4px;font-size:16px}.card p{margin:2px 0;font-size:13px;color:var(--sub)}
+.badge{display:inline-block;background:#d1fae5;color:#065f46;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px}
+.btn{background:var(--teal);color:#fff;border:0;border-radius:12px;padding:12px;font-size:15px;font-weight:700;width:100%;cursor:pointer;margin-top:8px}
+.btn.alt{background:var(--amber);color:#0B2545}.btn.red{background:var(--red)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.back{background:none;border:0;color:var(--teal);font-size:15px;font-weight:700;cursor:pointer;padding:6px 0;margin-bottom:6px}
+.mic{width:84px;height:84px;border-radius:50%;background:var(--red);color:#fff;font-size:34px;border:0;display:block;margin:6px auto;cursor:pointer}
+.mic.live{animation:p 1s infinite}@keyframes p{50%{transform:scale(1.1)}}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.say{text-align:center;font-size:13px;color:var(--sub)}
+select,input[type=range]{width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:15px;margin:6px 0}
+.ivr{background:#0B2545;color:#fff;border-radius:14px;padding:14px;font-size:15px;line-height:1.55;margin-bottom:10px}
+.kp{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.key{height:56px;border-radius:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:22px;font-weight:700;cursor:pointer}
+.key:active{background:var(--teal);color:#fff}
+.chk{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:10px 0 4px;color:var(--ink);line-height:1.45}
+.chk input{width:22px;height:22px;flex:none;margin-top:1px;accent-color:var(--teal)}
+details summary{cursor:pointer;color:var(--teal);font-weight:700;font-size:14px;padding:6px 0}
+details p{line-height:1.5}
+.listen{position:fixed;z-index:5;bottom:calc(16px + env(safe-area-inset-bottom,0px));right:max(16px,calc(50vw - 204px));background:var(--teal);color:#fff;border:0;border-radius:28px;padding:14px 20px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+.hide{display:none}
+.orb{border:0;border-radius:50%;background:radial-gradient(circle at 30% 25%,#7df9e6,#13A89E 45%,#5b4bdb 100%);box-shadow:0 0 0 0 rgba(19,168,158,.55),0 0 22px rgba(91,75,219,.55);display:grid;place-items:center;cursor:pointer;animation:glow 2.6s infinite}
+.orb.sm{width:52px;height:52px;flex:none}.orb.lg{width:112px;height:112px}
+.orb svg{width:46%;height:46%}
+.orb.live{animation:glow .8s infinite}
+@keyframes glow{0%{box-shadow:0 0 0 0 rgba(19,168,158,.55),0 0 22px rgba(91,75,219,.5)}70%{box-shadow:0 0 0 18px rgba(19,168,158,0),0 0 30px rgba(91,75,219,.6)}100%{box-shadow:0 0 0 0 rgba(19,168,158,0),0 0 22px rgba(91,75,219,.5)}}
+@media (prefers-reduced-motion:reduce){.orb,.mic.live,.orb.live,.bars i{animation:none!important}}
+.orbwrap{text-align:center;margin:8px 0 12px}
+.menu{background:rgba(255,255,255,.15);border:0;color:#fff;font-size:22px;width:44px;height:44px;border-radius:12px;cursor:pointer;flex:none}
+.top>div{flex:1}
+#drawer{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.45);z-index:10;display:none}
+#drawer.open{display:block}
+.dr{width:78%;max-width:320px;height:100%;background:var(--card);padding:calc(16px + env(safe-area-inset-top,0px)) 16px 16px;overflow:auto}
+.dr button{display:block;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--line);padding:14px 4px;font-size:16px;color:var(--ink);cursor:pointer}
+.bars{display:flex;gap:4px;justify-content:center;align-items:center;height:30px;margin-top:10px}
+.bars i{width:4px;height:8px;border-radius:2px;background:var(--teal)}
+.orb.live~.bars i{animation:bar .8s infinite ease-in-out}
+.bars i:nth-child(2){animation-delay:.1s!important}.bars i:nth-child(3){animation-delay:.2s!important}.bars i:nth-child(4){animation-delay:.3s!important}.bars i:nth-child(5){animation-delay:.4s!important}
+@keyframes bar{50%{height:28px}}
+input[type=text]{padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:15px}
+/* Laptop and desktop layout. Phones (under 800px) keep the layout above unchanged. */
+@media (min-width:800px){
+ .app{max-width:1120px;padding:28px 32px 104px}
+ .top{padding:22px 28px;border-radius:20px;margin-bottom:14px}
+ .top h1{font-size:32px}.top p{font-size:15px;margin-top:6px}
+ .menu{width:48px;height:48px}
+ .orb.sm{width:60px;height:60px}
+ .note{font-size:13px;margin-bottom:18px}
+ .listen{right:max(24px,calc(50vw - 560px + 24px))}
+
+ /* inner pages: centred reading column, card lists flow into columns */
+ #work,#schol,#learn,#comm,#ai,#call,#emerg,#prov{max-width:980px;margin:0 auto}
+ #emerg,#call,#ai,#prov{max-width:760px}
+ #jobs,#smatch,#pj{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;align-items:start}
+ #jobs .card,#smatch .card,#pj .card,#sreal .card,#lres .card{margin-bottom:0}
+ #sreal{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;align-items:start;margin-top:14px}
+ #sreal>h3,#sreal>.say,#sreal>.card:first-child{grid-column:1/-1}
+ #sreal>h3{margin:10px 0 0!important}
+ #lres{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;align-items:start;margin-bottom:14px}
+ #schol>.card:first-of-type{max-width:760px;margin-left:auto;margin-right:auto}
+ #smatch{margin-top:14px}
+ .mic{width:96px;height:96px;font-size:38px}
+ .chips{justify-content:center}
+ #learn .say,#work .say{text-align:center}
+ .kp{max-width:360px;margin-left:auto;margin-right:auto}
+ .ivr{font-size:16px}
+
+ /* home */
+ .langs{justify-content:center}
+ .grid{grid-template-columns:repeat(3,1fr);gap:16px}
+ .tile{padding:30px 14px;font-size:17px;border-radius:18px;transition:transform .15s,border-color .15s,box-shadow .15s}
+ .tile span{font-size:42px;margin-bottom:10px}
+ .tile-wide{grid-column:auto}
+ #home>.card{max-width:720px;margin:18px auto 0!important;padding:20px}
+ #home>.card h3{font-size:18px}#home>.card p{font-size:15px;line-height:1.5}
+ .card{padding:18px;border-radius:16px}
+ .card h3{font-size:17px}.card p{font-size:14px}
+ .btn{width:auto;min-width:200px;padding:12px 22px}
+ #emerg .btn,#call .btn,#ai .btn,#prov .btn,#schol .btn{width:100%}
+ #jobs .btn,#sreal .btn,#lres .btn,#smatch .btn{width:100%}
+ .dr{max-width:340px}
+}
+@media (min-width:1050px){
+ .grid{grid-template-columns:repeat(5,1fr)}
+}
+@media (min-width:800px) and (hover:hover){
+ .tile:hover{transform:translateY(-3px);border-color:var(--teal);box-shadow:0 8px 20px rgba(11,37,69,.12)}
+ .chip:hover{border-color:var(--teal)}
+ .btn:hover{filter:brightness(1.07)}
+ .dr button:hover{background:rgba(19,168,158,.1)}
+}
+</style>
+<div class="app">
+<div class="top"><button class="menu" onclick="menu(1)" aria-label="Menu">☰</button><div><h1>SkillBridge</h1><p data-i="sub"></p></div><button class="orb sm" onclick="go('ai')" aria-label="AI voice assistant"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button></div>
+<p class="note" data-i="note"></p>
+
+<section id="home">
+ <div class="langs" id="langs"></div>
+ <div class="grid">
+  <div class="tile" onclick="go('work')"><span>🛠️</span><b data-i="t_work"></b></div>
+  <div class="tile" onclick="go('schol')"><span>🎓</span><b data-i="t_schol"></b></div>
+  <div class="tile" onclick="go('learn')"><span>📘</span><b data-i="t_learn"></b></div>
+  <div class="tile" onclick="go('emerg')"><span>🆘</span><b data-i="t_emerg"></b></div>
+  <div class="tile tile-wide" onclick="go('call')"><span>📞</span><b data-i="t_vol"></b></div>
+ </div>
+ <div class="card" style="margin-top:10px"><h3 data-i="np_h"></h3><p data-h="np_p"></p><button class="btn alt" onclick="go('call')" data-i="np_b"></button></div>
+</section>
+
+<section id="work" class="hide">
+ <button class="back" onclick="go('home')" data-i="back"></button>
+ <button class="mic" id="mic" onclick="listen()" aria-label="Speak your skill">🎤</button>
+ <p class="say" id="say"></p>
+ <div class="chips" id="skills"></div>
+ <div id="jobs"></div>
+</section>
+
+<section id="schol" class="hide">
+ <button class="back" onclick="go('home')" data-i="back"></button>
+ <div class="card"><h3 data-i="s_h"></h3>
+  <p data-i="s_who"></p>
+  <select id="lvl"></select>
+  <p data-i="s_inc"></p>
+  <select id="inc"></select>
+  <button class="btn" onclick="schol()" data-i="s_show"></button></div>
+ <div id="smatch"></div>
+ <div id="sreal"></div>
+</section>
+
+<section id="learn" class="hide">
+ <button class="back" onclick="go('home')" data-i="back"></button>
+ <div class="card"><h3 data-i="l_h"></h3><p data-i="l_p"></p></div>
+ <p class="say" data-i="l_pick"></p>
+ <div class="chips" id="lchips"></div>
+ <div id="lres"></div>
+ <div class="card"><h3 data-i="l_pm_h"></h3><p data-i="l_pm_p"></p><a class="btn" style="display:block;text-align:center;text-decoration:none" href="https://nsdcindia.org/products/pradhan-mantri-kaushal-vikas-yojana" target="_blank" rel="noopener" data-i="l_pm_b"></a></div>
+ <div class="card"><h3 data-i="l_vol"></h3><button class="btn alt" onclick="go('call')" data-i="l_vol_b"></button></div>
+ <p class="say" data-i="l_note"></p>
+</section>
+
+<section id="emerg" class="hide">
+ <button class="back" onclick="go('home')" data-i="back"></button>
+ <div class="card"><h3 data-i="e_h"></h3>
+  <p data-i="e_what"></p>
+  <select id="etype"></select>
+  <p><span data-i="e_amt"></span> <b id="eamt">₹2,000</b></p>
+  <input type="range" id="erange" min="500" max="5000" step="500" value="2000" oninput="$('eamt').textContent='₹'+Number(this.value).toLocaleString('en-IN')">
+  <label class="chk"><input type="checkbox" id="econ" onchange="$('esendb').disabled=!this.checked"><span data-i="c_chk"></span></label>
+  <details><summary data-i="c_more"></summary><p data-i="c_li1"></p><p data-i="c_li2"></p><p data-i="c_li3"></p><p class="say" data-i="c_draft"></p></details>
+  <button class="btn red" id="esendb" onclick="esend()" disabled data-i="e_send"></button></div>
+ <div id="estat"></div>
+</section>
+
+<div id="drawer" onclick="menu(0)"><div class="dr" onclick="event.stopPropagation()"><h3 style="margin:0 0 8px">SkillBridge menu</h3><button onclick="nav('h')">🏠 Home</button><button onclick="nav('c')">🏘️ Community page</button><button onclick="nav('s')">🤝 Sponsor page</button><button onclick="nav('e')">🏢 Employer page</button><button onclick="nav('n')">✅ NGO / Volunteer login</button></div></div>
+<section id="comm" class="hide"></section>
+
+<section id="prov" class="hide">
+ <div class="card"><h3>Provider dashboard</h3><p>For employers, sponsors and NGO partners.</p></div>
+ <div class="chips" id="ptabs"></div>
+ <div id="pv"></div>
+</section>
+
+<section id="ai" class="hide">
+ <button class="back" onclick="go('home')" data-i="back"></button>
+ <div class="card"><h3 id="aih"></h3><p id="aid"></p></div>
+ <div class="orbwrap"><button class="orb lg" id="aimic" onclick="aiListen()" aria-label="Speak"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button><div class="bars"><i></i><i></i><i></i><i></i><i></i></div><p class="say" id="aihint"></p></div>
+ <div class="chips" id="aiq"></div>
+ <div style="display:flex;gap:8px;margin-bottom:10px"><input type="text" id="aitxt" style="flex:1"><button class="chip on" id="aisend" onclick="ask($('aitxt').value)"></button></div>
+ <div id="aichat"></div>
+</section>
+
+<section id="call" class="hide">
+ <button class="back" onclick="go('home')" data-i="back"></button>
+ <div class="card"><h3 data-i="c_h"></h3><p data-i="c_p"></p></div>
+ <div class="ivr" id="ivr"></div>
+ <button class="btn alt" id="cbtn" onclick="ivStart()" data-i="c_miss"></button>
+ <div class="kp hide" id="kp"></div>
+ <p class="say" data-i="c_hint"></p>
+ <button class="btn red hide" id="cend" onclick="ivEnd()" data-i="c_end"></button>
+</section>
+</div>
+<button class="listen" id="lis" onclick="listenBtn()"><span id="lisT" data-i="listen"></span></button>
+<script>
+const $=id=>document.getElementById(id);
+var cur="English";
+const SR={English:"en-IN","हिंदी":"hi-IN","தமிழ்":"ta-IN"};
+const LI={English:0,"हिंदी":1,"தமிழ்":2};
+const LC=["en-IN","hi-IN","ta-IN"];
+const S={
+English:{
+sub:"Local work, support and scholarships. Team Catalyst, SDG 1: No Poverty",
+note:"Prototype with sample data. Not real jobs or funds.",
+t_work:"Find Work",t_schol:"Scholarships",t_learn:"Free Courses",t_emerg:"Emergency Help",t_vol:"Talk to Volunteer",
+np_h:"📱 No smartphone? Use any button phone",
+np_p:"Give a missed call to <b>1800-XXX-XXXX</b> (sample toll-free number). We call you back, and a voice menu in your language guides you. Press 0 to talk to a volunteer.",
+np_b:"Hear how it works",
+back:"← Back",listen:"🔊 Listen",novoice:"Voice not supported here",
+w_hint:"Tap the mic and say your skill, or pick below",w_listen:"Listening… (demo)",w_show:"Showing nearby work for: ",verified:"NGO verified",contact:"Contact for this job",contacting:"Contacting employer… (demo)",up_h:"Want better pay?",up_b:"Learn {s} for free",
+s_h:"Find scholarships",s_who:"Who is studying?",lvl0:"School (Class 1-10)",lvl1:"Higher secondary (11-12)",lvl2:"College / Diploma",s_inc:"Family yearly income",inc0:"Below ₹1 lakh",inc1:"₹1 - 2.5 lakh",inc2:"Above ₹2.5 lakh",s_show:"Show matches",
+sc0:"Pre-matric scholarship (sample)",sc1:"Merit-cum-means scholarship (sample)",sc2:"Post-matric scholarship (sample)",sc3:"Local NGO education grant (sample)",
+for_:"For: ",lv_school:"School",lv_hs:"Higher secondary",lv_col:"College / Diploma",lv_all:"All levels",
+sc_help:"Help desk will assist with the application.",sc_none:"No match in sample data. A volunteer can check more schemes.",
+nsp_h:"National Scholarship Portal (NSP)",
+nsp_p:"One portal for most government scholarships. Every scheme has its own last date, and dates change each year. Check the current dates on the portal.",
+nsp_b:"Open scholarships.gov.in",gov_h:"Government schemes (on NSP)",pvt_h:"Private scholarships",
+state_note:"Each state also has its own scholarship portal. NSP links many of them.",
+confirm_note:"Rules, amounts and dates change every year. Always confirm on the official site before applying.",
+b_official:"Apply on official site",b_b4s:"Find and apply (Buddy4Study)",
+gd0:"Class 9-12 · about ₹12,000 per year",gd1:"School to college · apply on NSP",gd2:"School to professional courses · apply on NSP",gd3:"School and college · apply on NSP",gd4:"College and university students · apply on NSP",gd5:"Higher education · apply on NSP",
+pd0:"Undergraduate and postgraduate students · check the current round",pd1:"Class 11-12, college, diploma and ITI · economically weaker students",pd2:"Students facing a financial crisis",pd3:"For girl students",pd4:"Students in STEM courses",
+e_h:"Request emergency help",e_what:"What happened?",em0:"Medical",em1:"Accident",em2:"Food shortage",em3:"Lost work suddenly",e_amt:"Amount needed:",e_send:"Send request",e_ok:"Request sent ✅",
+e_s1:"Step 1: NGO partner verifies your request",e_s2:"Step 2: Sponsor fund approves a small grant",e_s3:"Step 3: Money goes to you or the service provider",
+c_chk:"I agree that the NGO help desk can see this request, check it and contact me.",c_more:"What happens to my information?",
+c_li1:"We keep: what happened, the amount, and your phone number and area.",
+c_li2:"Who sees it: the NGO help desk. A sponsor sees only the type of need, the amount and your ward, not your name.",
+c_li3:"How long: until your request is closed. You can ask a volunteer to delete it at any time.",
+c_draft:"Draft notice for this prototype. Your NGO partner should review it before real use.",c_need:"Tick the box to agree before sending.",
+l_h:"Learn a skill for free",l_p:"Learning a new skill can help you earn more. Pick a skill to get free video lessons or a Skill India course.",l_pick:"Pick your skill",l_search:"Search for this course name on the portal:",l_open:"Open Skill India Digital Hub",
+l_pm_h:"Free training under PMKVY",l_pm_p:"PMKVY short-term training is free and includes assessment and a certificate. It is meant for unemployed youth and school or college dropouts. Ask a volunteer to check if you qualify.",l_pm_b:"About PMKVY (NSDC)",
+l_vol:"A volunteer can help you register",l_vol_b:"Talk to a volunteer",l_note:"Courses and training centres change. Confirm on the official site.",
+l_yt_p:"Free video lessons. YouTube lessons do not give a certificate. For a certificate, ask a volunteer about Skill India courses.",l_yt_b:"Open YouTube lessons",
+c_h:"Helpline simulation",c_p:"This shows what a worker with a basic phone hears after a missed call. Tap Listen to hear the voice prompt.",c_miss:"📞 Give a missed call",c_end:"End call",c_hint:"* main menu · # repeat · 0 volunteer",c_idle:"No call yet. Tap the button to give a missed call.",c_ring:"Calling you back…",
+ai_h:"AI Voice Assistant",ai_d:"Speak or type in simple words. It understands what you need and takes you to the right help. Replies here are a demo.",ai_hint:"Tap the glowing mic and speak",ai_ph:"Type here…",ai_send:"Send",ai_you:"You",ai_bot:"Assistant",ai_open:"Open",
+ai_q:["I need tailoring work","Scholarship for my daughter","I need money for hospital","Talk to a volunteer","I want to learn a skill for free"],
+ai_r:["I found nearby jobs for you. Opening Find Work.","I can help with scholarships. Opening scholarship finder.","I am sorry to hear that. Opening emergency help.","Let me connect you to a volunteer from the NGO help desk.","I can help you find free courses. Opening Free Courses."]
+},
+"हिंदी":{
+sub:"स्थानीय काम, सहायता और छात्रवृत्ति। टीम कैटालिस्ट, SDG 1: गरीबी नहीं",
+note:"सैंपल डेटा वाला प्रोटोटाइप। असली नौकरियाँ या पैसा नहीं।",
+t_work:"काम खोजें",t_schol:"छात्रवृत्ति",t_learn:"मुफ़्त कोर्स",t_emerg:"आपातकालीन मदद",t_vol:"स्वयंसेवक से बात करें",
+np_h:"📱 स्मार्टफ़ोन नहीं है? कोई भी बटन वाला फ़ोन चलेगा",
+np_p:"<b>1800-XXX-XXXX</b> (सैंपल टोल-फ़्री नंबर) पर मिस्ड कॉल दें। हम आपको वापस फ़ोन करेंगे, और आपकी भाषा में आवाज़ वाला मेनू आपको रास्ता दिखाएगा। स्वयंसेवक से बात करने के लिए 0 दबाएँ।",
+np_b:"देखें यह कैसे काम करता है",
+back:"← वापस",listen:"🔊 सुनें",novoice:"यहाँ आवाज़ काम नहीं करती",
+w_hint:"माइक दबाकर अपना हुनर बोलें, या नीचे से चुनें",w_listen:"सुन रहा हूँ… (डेमो)",w_show:"पास के काम: ",verified:"एनजीओ सत्यापित",contact:"इस काम के लिए संपर्क करें",contacting:"नियोक्ता से संपर्क हो रहा है… (डेमो)",up_h:"ज़्यादा कमाई चाहिए?",up_b:"{s} मुफ़्त सीखें",
+s_h:"छात्रवृत्ति खोजें",s_who:"कौन पढ़ रहा है?",lvl0:"स्कूल (कक्षा 1-10)",lvl1:"उच्च माध्यमिक (11-12)",lvl2:"कॉलेज / डिप्लोमा",s_inc:"परिवार की सालाना आय",inc0:"₹1 लाख से कम",inc1:"₹1 - 2.5 लाख",inc2:"₹2.5 लाख से ज़्यादा",s_show:"मेल खाती योजनाएँ दिखाएँ",
+sc0:"प्री-मैट्रिक छात्रवृत्ति (सैंपल)",sc1:"मेरिट-कम-मीन्स छात्रवृत्ति (सैंपल)",sc2:"पोस्ट-मैट्रिक छात्रवृत्ति (सैंपल)",sc3:"स्थानीय एनजीओ शिक्षा अनुदान (सैंपल)",
+for_:"किसके लिए: ",lv_school:"स्कूल",lv_hs:"उच्च माध्यमिक",lv_col:"कॉलेज / डिप्लोमा",lv_all:"सभी स्तर",
+sc_help:"आवेदन में हेल्प डेस्क आपकी मदद करेगा।",sc_none:"सैंपल डेटा में कोई योजना नहीं मिली। स्वयंसेवक और योजनाएँ देख सकता है।",
+nsp_h:"राष्ट्रीय छात्रवृत्ति पोर्टल (NSP)",
+nsp_p:"ज़्यादातर सरकारी छात्रवृत्तियों के लिए एक पोर्टल। हर योजना की अपनी आख़िरी तारीख होती है और तारीखें हर साल बदलती हैं। मौजूदा तारीखें पोर्टल पर देखें।",
+nsp_b:"scholarships.gov.in खोलें",gov_h:"सरकारी योजनाएँ (NSP पर)",pvt_h:"निजी छात्रवृत्तियाँ",
+state_note:"हर राज्य का अपना छात्रवृत्ति पोर्टल भी होता है। NSP कई पोर्टलों से जुड़ा है।",
+confirm_note:"नियम, राशि और तारीखें हर साल बदलती हैं। आवेदन से पहले हमेशा आधिकारिक साइट पर जाँच लें।",
+b_official:"आधिकारिक साइट पर आवेदन करें",b_b4s:"खोजें और आवेदन करें (Buddy4Study)",
+gd0:"कक्षा 9-12 · लगभग ₹12,000 प्रति वर्ष",gd1:"स्कूल से कॉलेज तक · NSP पर आवेदन करें",gd2:"स्कूल से प्रोफ़ेशनल कोर्स तक · NSP पर आवेदन करें",gd3:"स्कूल और कॉलेज · NSP पर आवेदन करें",gd4:"कॉलेज और विश्वविद्यालय के छात्र · NSP पर आवेदन करें",gd5:"उच्च शिक्षा · NSP पर आवेदन करें",
+pd0:"स्नातक और स्नातकोत्तर छात्र · मौजूदा दौर देखें",pd1:"कक्षा 11-12, कॉलेज, डिप्लोमा और ITI · आर्थिक रूप से कमज़ोर छात्र",pd2:"आर्थिक संकट वाले छात्र",pd3:"छात्राओं के लिए",pd4:"STEM कोर्स के छात्र",
+e_h:"आपातकालीन मदद माँगें",e_what:"क्या हुआ?",em0:"इलाज",em1:"दुर्घटना",em2:"खाने की कमी",em3:"अचानक काम छूट गया",e_amt:"ज़रूरी राशि:",e_send:"अनुरोध भेजें",e_ok:"अनुरोध भेज दिया ✅",
+e_s1:"चरण 1: एनजीओ साझेदार आपके अनुरोध की जाँच करता है",e_s2:"चरण 2: स्पॉन्सर फ़ंड छोटा अनुदान मंज़ूर करता है",e_s3:"चरण 3: पैसा आपको या सेवा देने वाले को जाता है",
+c_chk:"मैं सहमत हूँ कि एनजीओ हेल्प डेस्क यह अनुरोध देख सकता है, इसकी जाँच कर सकता है और मुझसे संपर्क कर सकता है।",c_more:"मेरी जानकारी का क्या होगा?",
+c_li1:"हम रखते हैं: क्या हुआ, राशि, और आपका फ़ोन नंबर व इलाका।",
+c_li2:"कौन देखता है: एनजीओ हेल्प डेस्क। स्पॉन्सर को सिर्फ़ ज़रूरत का प्रकार, राशि और आपका वार्ड दिखता है, आपका नाम नहीं।",
+c_li3:"कितने समय तक: आपका अनुरोध बंद होने तक। आप किसी भी समय स्वयंसेवक से इसे हटाने को कह सकते हैं।",
+c_draft:"यह इस प्रोटोटाइप का मसौदा नोटिस है। असली इस्तेमाल से पहले आपका एनजीओ साझेदार इसकी समीक्षा करे।",c_need:"भेजने से पहले सहमति का डिब्बा चुनें।",
+l_h:"मुफ़्त में हुनर सीखें",l_p:"नया हुनर सीखने से आप ज़्यादा कमा सकते हैं। अपना हुनर चुनें और मुफ़्त वीडियो पाठ या स्किल इंडिया का कोर्स पाएँ।",l_pick:"अपना हुनर चुनें",l_search:"पोर्टल पर इस कोर्स का नाम खोजें:",l_open:"स्किल इंडिया डिजिटल हब खोलें",
+l_pm_h:"PMKVY के तहत मुफ़्त प्रशिक्षण",l_pm_p:"PMKVY का छोटी अवधि का प्रशिक्षण मुफ़्त है, इसमें जाँच और प्रमाणपत्र भी शामिल है। यह बेरोज़गार युवाओं और स्कूल या कॉलेज छोड़ने वालों के लिए है। स्वयंसेवक से पूछें कि आप पात्र हैं या नहीं।",l_pm_b:"PMKVY के बारे में (NSDC)",
+l_vol:"स्वयंसेवक रजिस्टर करने में मदद कर सकता है",l_vol_b:"स्वयंसेवक से बात करें",l_note:"कोर्स और प्रशिक्षण केंद्र बदलते रहते हैं। आधिकारिक साइट पर जाँच लें।",
+l_yt_p:"मुफ़्त वीडियो पाठ। YouTube के पाठों से प्रमाणपत्र नहीं मिलता। प्रमाणपत्र के लिए स्वयंसेवक से स्किल इंडिया कोर्स के बारे में पूछें।",l_yt_b:"YouTube पाठ खोलें",
+c_h:"हेल्पलाइन सिमुलेशन",c_p:"यह दिखाता है कि साधारण फ़ोन वाला कामगार मिस्ड कॉल के बाद क्या सुनता है। आवाज़ सुनने के लिए सुनें दबाएँ।",c_miss:"📞 मिस्ड कॉल दें",c_end:"कॉल खत्म करें",c_hint:"* मुख्य मेनू · # दोबारा सुनें · 0 स्वयंसेवक",c_idle:"अभी कोई कॉल नहीं। मिस्ड कॉल देने के लिए बटन दबाएँ।",c_ring:"आपको वापस फ़ोन कर रहे हैं…",
+ai_h:"AI वॉइस असिस्टेंट",ai_d:"सरल शब्दों में बोलें या लिखें। मैं समझूँगा कि आपको क्या चाहिए और सही मदद तक पहुँचाऊँगा। यहाँ जवाब डेमो हैं।",ai_hint:"चमकते माइक को दबाएँ और बोलें",ai_ph:"यहाँ लिखें…",ai_send:"भेजें",ai_you:"आप",ai_bot:"असिस्टेंट",ai_open:"खोलें",
+ai_q:["मुझे सिलाई का काम चाहिए","मेरी बेटी के लिए छात्रवृत्ति","अस्पताल के लिए पैसे चाहिए","स्वयंसेवक से बात करें","मुझे मुफ़्त में हुनर सीखना है"],
+ai_r:["मुझे आपके पास के काम मिले हैं। काम खोजें खोल रहा हूँ।","मैं छात्रवृत्ति में मदद कर सकता हूँ। छात्रवृत्ति खोजक खोल रहा हूँ।","यह सुनकर दुख हुआ। आपातकालीन मदद खोल रहा हूँ।","मैं आपको एनजीओ हेल्प डेस्क के स्वयंसेवक से जोड़ता हूँ।","मैं मुफ़्त कोर्स खोजने में मदद कर सकता हूँ। मुफ़्त कोर्स खोल रहा हूँ।"]
+},
+"தமிழ்":{
+sub:"உள்ளூர் வேலை, உதவி மற்றும் உதவித்தொகை. டீம் கேட்டலிஸ்ட், SDG 1: வறுமை இல்லை",
+note:"மாதிரி தரவுடன் முன்மாதிரி. உண்மையான வேலை அல்லது பணம் அல்ல.",
+t_work:"வேலை தேடு",t_schol:"உதவித்தொகை",t_learn:"இலவசப் படிப்புகள்",t_emerg:"அவசர உதவி",t_vol:"தன்னார்வலரிடம் பேசு",
+np_h:"📱 ஸ்மார்ட்போன் இல்லையா? எந்த பட்டன் போனும் போதும்",
+np_p:"<b>1800-XXX-XXXX</b> (மாதிரி கட்டணமில்லா எண்) எண்ணுக்கு மிஸ்டு கால் கொடுங்கள். நாங்கள் உங்களை மீண்டும் அழைப்போம்; உங்கள் மொழியில் குரல் மெனு வழிகாட்டும். தன்னார்வலரிடம் பேச 0 ஐ அழுத்துங்கள்.",
+np_b:"இது எப்படி வேலை செய்கிறது என்று கேளுங்கள்",
+back:"← பின்செல்",listen:"🔊 கேளுங்கள்",novoice:"இங்கே குரல் வசதி இல்லை",
+w_hint:"மைக்கை தட்டி உங்கள் திறனைச் சொல்லுங்கள், அல்லது கீழே தேர்வு செய்யுங்கள்",w_listen:"கேட்கிறேன்… (டெமோ)",w_show:"அருகிலுள்ள வேலைகள்: ",verified:"என்ஜிஓ சரிபார்த்தது",contact:"இந்த வேலைக்குத் தொடர்பு கொள்ள",contacting:"வேலை வழங்குபவரை தொடர்பு கொள்கிறோம்… (டெமோ)",up_h:"அதிக சம்பளம் வேண்டுமா?",up_b:"{s} இலவசமாகக் கற்கவும்",
+s_h:"உதவித்தொகை தேடு",s_who:"யார் படிக்கிறார்?",lvl0:"பள்ளி (வகுப்பு 1-10)",lvl1:"மேல்நிலை (11-12)",lvl2:"கல்லூரி / டிப்ளமோ",s_inc:"குடும்ப ஆண்டு வருமானம்",inc0:"₹1 லட்சத்துக்கு கீழ்",inc1:"₹1 - 2.5 லட்சம்",inc2:"₹2.5 லட்சத்துக்கு மேல்",s_show:"பொருத்தமானவற்றைக் காட்டு",
+sc0:"முன்-மெட்ரிக் உதவித்தொகை (மாதிரி)",sc1:"தகுதி-வருமான உதவித்தொகை (மாதிரி)",sc2:"பின்-மெட்ரிக் உதவித்தொகை (மாதிரி)",sc3:"உள்ளூர் என்ஜிஓ கல்வி மானியம் (மாதிரி)",
+for_:"யாருக்கு: ",lv_school:"பள்ளி",lv_hs:"மேல்நிலை",lv_col:"கல்லூரி / டிப்ளமோ",lv_all:"அனைத்து நிலைகள்",
+sc_help:"விண்ணப்பிக்க உதவி மையம் உங்களுக்கு உதவும்.",sc_none:"மாதிரி தரவில் பொருத்தம் இல்லை. தன்னார்வலர் மேலும் திட்டங்களைப் பார்க்கலாம்.",
+nsp_h:"தேசிய உதவித்தொகை இணையதளம் (NSP)",
+nsp_p:"பெரும்பாலான அரசு உதவித்தொகைகளுக்கு ஒரே இணையதளம். ஒவ்வொரு திட்டத்திற்கும் அதன் சொந்த கடைசி தேதி உண்டு; தேதிகள் ஆண்டுதோறும் மாறும். தற்போதைய தேதிகளை இணையதளத்தில் பாருங்கள்.",
+nsp_b:"scholarships.gov.in ஐத் திற",gov_h:"அரசுத் திட்டங்கள் (NSP இல்)",pvt_h:"தனியார் உதவித்தொகைகள்",
+state_note:"ஒவ்வொரு மாநிலத்திற்கும் தனி உதவித்தொகை இணையதளமும் உண்டு. NSP பலவற்றை இணைக்கிறது.",
+confirm_note:"விதிகள், தொகைகள், தேதிகள் ஆண்டுதோறும் மாறும். விண்ணப்பிக்கும் முன் அதிகாரப்பூர்வ தளத்தில் உறுதி செய்யுங்கள்.",
+b_official:"அதிகாரப்பூர்வ தளத்தில் விண்ணப்பிக்க",b_b4s:"தேடி விண்ணப்பிக்க (Buddy4Study)",
+gd0:"வகுப்பு 9-12 · ஆண்டுக்கு சுமார் ₹12,000",gd1:"பள்ளி முதல் கல்லூரி வரை · NSP இல் விண்ணப்பிக்கவும்",gd2:"பள்ளி முதல் தொழில்முறைப் படிப்புகள் வரை · NSP இல் விண்ணப்பிக்கவும்",gd3:"பள்ளி மற்றும் கல்லூரி · NSP இல் விண்ணப்பிக்கவும்",gd4:"கல்லூரி மற்றும் பல்கலைக்கழக மாணவர்கள் · NSP இல் விண்ணப்பிக்கவும்",gd5:"உயர்கல்வி · NSP இல் விண்ணப்பிக்கவும்",
+pd0:"இளநிலை மற்றும் முதுநிலை மாணவர்கள் · தற்போதைய சுற்றைப் பாருங்கள்",pd1:"வகுப்பு 11-12, கல்லூரி, டிப்ளமோ மற்றும் ITI · பொருளாதார ரீதியாக பின்தங்கிய மாணவர்கள்",pd2:"நிதி நெருக்கடியில் உள்ள மாணவர்கள்",pd3:"மாணவிகளுக்காக",pd4:"STEM படிப்பு மாணவர்கள்",
+e_h:"அவசர உதவி கோருங்கள்",e_what:"என்ன நடந்தது?",em0:"மருத்துவம்",em1:"விபத்து",em2:"உணவுப் பற்றாக்குறை",em3:"திடீரென வேலை இழப்பு",e_amt:"தேவையான தொகை:",e_send:"கோரிக்கையை அனுப்பு",e_ok:"கோரிக்கை அனுப்பப்பட்டது ✅",
+e_s1:"படி 1: என்ஜிஓ பங்குதாரர் உங்கள் கோரிக்கையைச் சரிபார்ப்பார்",e_s2:"படி 2: ஸ்பான்சர் நிதி சிறிய மானியத்தை அங்கீகரிக்கும்",e_s3:"படி 3: பணம் உங்களுக்கு அல்லது சேவை வழங்குபவருக்குச் செல்லும்",
+c_chk:"என்ஜிஓ உதவி மையம் இந்தக் கோரிக்கையைப் பார்க்கவும், சரிபார்க்கவும், என்னைத் தொடர்பு கொள்ளவும் நான் ஒப்புக்கொள்கிறேன்.",c_more:"என் விவரங்களுக்கு என்ன ஆகும்?",
+c_li1:"நாங்கள் வைத்திருப்பது: என்ன நடந்தது, தொகை, உங்கள் தொலைபேசி எண் மற்றும் பகுதி.",
+c_li2:"யார் பார்ப்பார்கள்: என்ஜிஓ உதவி மையம். ஸ்பான்சருக்கு தேவையின் வகை, தொகை மற்றும் உங்கள் வார்டு மட்டுமே தெரியும்; உங்கள் பெயர் தெரியாது.",
+c_li3:"எவ்வளவு காலம்: உங்கள் கோரிக்கை முடியும் வரை. எப்போது வேண்டுமானாலும் தன்னார்வலரிடம் நீக்கச் சொல்லலாம்.",
+c_draft:"இது இந்த முன்மாதிரிக்கான வரைவு அறிவிப்பு. உண்மையான பயன்பாட்டுக்கு முன் உங்கள் என்ஜிஓ பங்குதாரர் இதை மதிப்பாய்வு செய்ய வேண்டும்.",c_need:"அனுப்பும் முன் ஒப்புதல் பெட்டியைத் தேர்வு செய்யுங்கள்.",
+l_h:"இலவசமாக ஒரு திறனைக் கற்கவும்",l_p:"புதிய திறனைக் கற்றால் அதிகம் சம்பாதிக்கலாம். ஒரு திறனைத் தேர்ந்தெடுத்து இலவச வீடியோ பாடங்கள் அல்லது ஸ்கில் இந்தியா படிப்பைப் பெறுங்கள்.",l_pick:"உங்கள் திறனைத் தேர்ந்தெடுங்கள்",l_search:"இணையதளத்தில் இந்தப் படிப்பின் பெயரைத் தேடுங்கள்:",l_open:"ஸ்கில் இந்தியா டிஜிட்டல் ஹப்பைத் திற",
+l_pm_h:"PMKVY இன் கீழ் இலவசப் பயிற்சி",l_pm_p:"PMKVY குறுகிய காலப் பயிற்சி இலவசம்; மதிப்பீடும் சான்றிதழும் அதில் அடங்கும். இது வேலையில்லா இளைஞர்களுக்கும் பள்ளி அல்லது கல்லூரியைப் பாதியில் விட்டவர்களுக்கும் ஆனது. நீங்கள் தகுதியானவரா என்று தன்னார்வலரிடம் கேளுங்கள்.",l_pm_b:"PMKVY பற்றி (NSDC)",
+l_vol:"பதிவு செய்ய தன்னார்வலர் உதவலாம்",l_vol_b:"தன்னார்வலரிடம் பேசு",l_note:"படிப்புகளும் பயிற்சி மையங்களும் மாறலாம். அதிகாரப்பூர்வ தளத்தில் உறுதி செய்யுங்கள்.",
+l_yt_p:"இலவச வீடியோ பாடங்கள். YouTube பாடங்களுக்குச் சான்றிதழ் கிடைக்காது. சான்றிதழுக்கு, ஸ்கில் இந்தியா படிப்புகள் பற்றி தன்னார்வலரிடம் கேளுங்கள்.",l_yt_b:"YouTube பாடங்களைத் திற",
+c_h:"உதவி எண் மாதிரி",c_p:"அடிப்படை போன் வைத்திருக்கும் தொழிலாளர் மிஸ்டு கால் கொடுத்த பிறகு என்ன கேட்பார் என்பதை இது காட்டுகிறது. குரலைக் கேட்க கேளுங்கள் என்பதை அழுத்துங்கள்.",c_miss:"📞 மிஸ்டு கால் கொடுங்கள்",c_end:"அழைப்பை முடி",c_hint:"* முதன்மை மெனு · # மீண்டும் கேட்க · 0 தன்னார்வலர்",c_idle:"இன்னும் அழைப்பு இல்லை. மிஸ்டு கால் கொடுக்க பொத்தானை அழுத்துங்கள்.",c_ring:"உங்களை மீண்டும் அழைக்கிறோம்…",
+ai_h:"AI குரல் உதவியாளர்",ai_d:"எளிய வார்த்தைகளில் பேசவும் அல்லது எழுதவும். உங்களுக்கு என்ன தேவை என்பதை புரிந்துகொண்டு சரியான உதவிக்கு அழைத்துச் செல்லும். இங்குள்ள பதில்கள் டெமோ.",ai_hint:"ஒளிரும் மைக்கை தட்டி பேசுங்கள்",ai_ph:"இங்கே எழுதுங்கள்…",ai_send:"அனுப்பு",ai_you:"நீங்கள்",ai_bot:"உதவியாளர்",ai_open:"திற",
+ai_q:["எனக்கு தையல் வேலை வேண்டும்","என் மகளுக்கு உதவித்தொகை","மருத்துவமனைக்கு பணம் வேண்டும்","தன்னார்வலரிடம் பேச வேண்டும்","நான் இலவசமாக ஒரு திறனைக் கற்க விரும்புகிறேன்"],
+ai_r:["உங்கள் அருகில் வேலைகள் கிடைத்துள்ளன. வேலை தேடு திறக்கிறேன்.","உதவித்தொகையில் உதவ முடியும். உதவித்தொகை தேடலைத் திறக்கிறேன்.","இதைக் கேட்க வருந்துகிறேன். அவசர உதவியைத் திறக்கிறேன்.","என்ஜிஓ உதவி மையத்தின் தன்னார்வலருடன் இணைக்கிறேன்.","இலவசப் படிப்புகளைக் கண்டறிய உதவ முடியும். இலவசப் படிப்புகளைத் திறக்கிறேன்."]
+}};
+const t=k=>{const v=S[cur][k];return v===undefined?S.English[k]:v};
+
+const TR={
+"Tailor":["दर्जी","தையல்காரர்"],"Housemaid":["घरेलू सहायक","வீட்டு வேலை"],"Gardener":["माली","தோட்டக்காரர்"],"Tutor":["ट्यूटर","ஆசிரியர் (டியூஷன்)"],"Wood cutter":["लकड़हारा","மரம் வெட்டுபவர்"],"Cook":["रसोइया","சமையலர்"],"Driver":["ड्राइवर","ஓட்டுநர்"],"Electrician":["इलेक्ट्रीशियन","எலக்ட்ரீஷியன்"],"Plumber":["प्लंबर","பிளம்பர்"],"Painter":["पेंटर","பெயிண்டர்"],"Mason":["राजमिस्त्री","கொத்தனார்"],"Security guard":["सुरक्षा गार्ड","காவலர்"],"Delivery helper":["डिलीवरी सहायक","டெலிவரி உதவியாளர்"],
+"Stitching unit helper":["सिलाई यूनिट सहायक","தையல் பிரிவு உதவியாளர்"],"Uniform stitching orders":["यूनिफ़ॉर्म सिलाई के ऑर्डर","சீருடை தைக்கும் ஆர்டர்கள்"],"Morning house help":["सुबह घर का काम","காலை வீட்டு வேலை"],"Cooking and cleaning":["खाना बनाना और सफ़ाई","சமையல் மற்றும் சுத்தம்"],"Garden upkeep":["बगीचे की देखभाल","தோட்டப் பராமரிப்பு"],"Evening tuition, Class 1-5":["शाम की ट्यूशन, कक्षा 1-5","மாலை டியூஷன், வகுப்பு 1-5"],"Firewood cutting, daily":["रोज़ जलावन की लकड़ी काटना","தினமும் விறகு வெட்டுதல்"],"Cook for small canteen":["छोटी कैंटीन के लिए रसोइया","சிறிய கேன்டீனுக்கு சமையலர்"],"Auto / van driver":["ऑटो / वैन ड्राइवर","ஆட்டோ / வேன் ஓட்டுநர்"],"Electrician helper":["इलेक्ट्रीशियन सहायक","எலக்ட்ரீஷியன் உதவியாளர்"],"Plumbing assistant":["प्लंबिंग सहायक","பிளம்பிங் உதவியாளர்"],"House painting crew":["घर पेंटिंग टीम","வீடு பெயிண்டிங் குழு"],"Construction helper":["निर्माण कार्य सहायक","கட்டுமான உதவியாளர்"],"Night security guard":["रात का सुरक्षा गार्ड","இரவு காவலர்"],"Grocery delivery":["किराना डिलीवरी","மளிகை டெலிவரி"],
+"Ward 2":["वार्ड 2","வார்டு 2"],"Ward 3":["वार्ड 3","வார்டு 3"],"Ward 4":["वार्ड 4","வார்டு 4"],"Ward 6":["वार्ड 6","வார்டு 6"],"Market road":["बाज़ार रोड","சந்தை சாலை"],"Green Colony":["ग्रीन कॉलोनी","கிரீன் காலனி"],"Lake View":["लेक व्यू","லேக் வியூ"],"Park Avenue":["पार्क एवेन्यू","பார்க் அவென்யூ"],"Mill Lane":["मिल लेन","மில் தெரு"],"Bus stand":["बस स्टैंड","பேருந்து நிலையம்"],"Town centre":["शहर का केंद्र","நகர மையம்"],"New Colony":["न्यू कॉलोनी","புதிய காலனி"],"Site road":["साइट रोड","சைட் சாலை"],"Apartment block":["अपार्टमेंट ब्लॉक","அடுக்குமாடி குடியிருப்பு"],
+"Maths tutor":["गणित ट्यूटर","கணித ஆசிரியர்"],"Science tutor":["विज्ञान ट्यूटर","அறிவியல் ஆசிரியர்"],"Physics tutor":["भौतिकी ट्यूटर","இயற்பியல் ஆசிரியர்"],"General tutor":["सभी विषयों का ट्यूटर","அனைத்துப் பாடங்களுக்கும் ஆசிரியர்"],"Dress designing":["ब्लाउज़ और ड्रेस डिज़ाइनिंग","பிளவுஸ் மற்றும் ஆடை வடிவமைப்பு"],"Embroidery":["कढ़ाई","எம்பிராய்டரி"],"Tailoring":["सिलाई सीखना","தையல் பயிற்சி"],"Photography":["फ़ोटोग्राफ़ी","புகைப்படக்கலை"],"Spoken English":["अंग्रेज़ी बोलना","ஆங்கிலம் பேசுதல்"],"Basic computer":["कंप्यूटर की बुनियादी जानकारी","அடிப்படை கணினி"],"Mobile repair":["मोबाइल रिपेयर","மொபைல் பழுதுபார்ப்பு"],
+"new":["नया","புதிய"],"needed":["चाहिए","தேவை"],"day":["दिन","நாள்"],"month":["महीना","மாதம்"]
+};
+function tx(s,l){const i=(l===undefined?LI[cur]:l)-1;if(i<0)return s;if(TR[s])return TR[s][i];if(/ km$/.test(s))return s.replace("km",["कि.मी.","கி.மீ."][i]);return s}
+function txJob(j,l){const ti=/ needed$/.test(j[0])?tx(j[0].replace(/ needed$/,""),l)+" "+tx("needed",l):tx(j[0],l);const ar=j[1].split(" · ").map(x=>tx(x,l)).join(" · ");const pay=j[2].replace("/day"," / "+tx("day",l)).replace("/month"," / "+tx("month",l));return [ti,ar,pay]}
+const IC={"Tailor":"🧵","Housemaid":"🧹","Gardener":"🌱","Tutor":"📚","Wood cutter":"🪓","Cook":"🍳","Driver":"🚗","Electrician":"💡","Plumber":"🔧","Painter":"🎨","Mason":"🧱","Security guard":"🛡️","Delivery helper":"📦"};
+/* course source per skill: "yt" = YouTube lessons, "sidh" = search on Skill India Digital Hub. Wood cutter has no course. */
+const CR={"Maths tutor":{s:"yt",q:"maths tutor teaching tips for school students"},"Science tutor":{s:"yt",q:"science teaching tips for school students"},"Physics tutor":{s:"yt",q:"how to teach physics class 9 10"},"General tutor":{s:"yt",q:"how to become a home tutor"},"Dress designing":{s:"yt",q:"blouse cutting and dress designing for beginners"},"Embroidery":{s:"yt",q:"hand embroidery for beginners"},"Tailoring":{s:"yt",q:"tailoring stitching course for beginners",d:"Sewing machine operator"},"Photography":{s:"yt",q:"mobile photography for beginners"},"Spoken English":{s:"yt",q:"spoken English for beginners"},"Basic computer":{s:"yt",q:"basic computer course for beginners"},"Mobile repair":{s:"sidh",q:"Mobile phone repair technician"}};
+const UP={"Tailor":"Tailoring","Tutor":"General tutor"};
+Object.assign(IC,{"Maths tutor":"🧮","Science tutor":"🔬","Physics tutor":"⚛️","General tutor":"📖","Dress designing":"👗","Embroidery":"🪡","Tailoring":"🧵","Photography":"📷","Spoken English":"🗣️","Basic computer":"💻","Mobile repair":"📱"});
+const YTL={English:"","हिंदी":" Hindi","தமிழ்":" Tamil"};
+const SIDH="https://skillindiadigital.gov.in";
+const lk=(u,x,c)=>`<a class="btn ${c||''}" style="display:block;text-align:center;text-decoration:none" href="${u}" target="_blank" rel="noopener">${x}</a>`;
+
+const J={Tailor:[["Stitching unit helper","Ward 4 · 1.2 km","₹450/day"],["Uniform stitching orders","Market road · 2 km","₹6,000/month"]],Housemaid:[["Morning house help","Green Colony · 0.8 km","₹4,500/month"],["Cooking and cleaning","Lake View · 1.9 km","₹6,000/month"]],Gardener:[["Garden upkeep","Park Avenue · 1.5 km","₹500/day"]],Tutor:[["Evening tuition, Class 1-5","Ward 2 · 1 km","₹3,000/month"]],"Wood cutter":[["Firewood cutting, daily","Mill Lane · 2.4 km","₹600/day"]],Cook:[["Cook for small canteen","Bus stand · 1.1 km","₹7,000/month"]],Driver:[["Auto / van driver","Town centre · 2 km","₹700/day"]],Electrician:[["Electrician helper","Ward 6 · 1.7 km","₹600/day"]],Plumber:[["Plumbing assistant","Ward 3 · 2.2 km","₹600/day"]],Painter:[["House painting crew","New Colony · 2.8 km","₹650/day"]],Mason:[["Construction helper","Site road · 3 km","₹550/day"]],"Security guard":[["Night security guard","Apartment block · 1.4 km","₹9,000/month"]],"Delivery helper":[["Grocery delivery","Market road · 0.9 km","₹400/day"]]};
+
+/* voice */
+function say(parts){try{speechSynthesis.cancel();parts.forEach(p=>{const u=new SpeechSynthesisUtterance(p[0]);u.lang=p[1];speechSynthesis.speak(u)})}catch(e){}}
+function listenBtn(){
+ if(!("speechSynthesis" in window)){const b=$("lisT");b.textContent=t("novoice");setTimeout(()=>{b.textContent=t("listen")},2200);return}
+ if(speechSynthesis.speaking){speechSynthesis.cancel();return}
+ const v=[...document.querySelectorAll("section")].find(s=>!s.classList.contains("hide"));
+ if(!v)return;
+ if(v.id==="call"){say(ivS==="off"?[[t("c_p"),SR[cur]]]:ivrParts());return}
+ say([[v.innerText.replace(/\s+/g," ").slice(0,700),SR[cur]]])
+}
+
+/* navigation and language */
+function go(id){
+ ["home","work","schol","learn","emerg","call","ai","prov","comm"].forEach(s=>$(s).classList.toggle("hide",s!==id));
+ $("lis").classList.toggle("hide",id==="prov"||id==="comm");
+ if(id!=="call"&&ivS!=="off")ivEnd();else{try{speechSynthesis.cancel()}catch(e){}}
+ window.scrollTo(0,0)
+}
+function fillSel(id,keys){const s=$(id),i=s.selectedIndex<0?0:s.selectedIndex;s.innerHTML=keys.map(k=>`<option>${t(k)}</option>`).join("");s.selectedIndex=i}
+const ek=["em0","em1","em2","em3"];
+function setLang(n){cur=n;applyLang()}
+function applyLang(){
+ $("langs").innerHTML=Object.keys(S).map(k=>`<button class="chip big ${k===cur?"on":""}" onclick="setLang('${k}')">${k}</button>`).join("");
+ document.querySelectorAll("[data-i]").forEach(e=>{e.textContent=t(e.dataset.i)});
+ document.querySelectorAll("[data-h]").forEach(e=>{e.innerHTML=t(e.dataset.h)});
+ document.documentElement.lang=SR[cur].slice(0,2);
+ fillSel("lvl",["lvl0","lvl1","lvl2"]);fillSel("inc",["inc0","inc1","inc2"]);fillSel("etype",ek);
+ renderSkills();if(lastSkill)jobs(lastSkill);else $("say").textContent=t("w_hint");
+ renderReal();if(sholShown)schol();renderE();learnChips();learn(lastLearn);aiText();ivIdle()
+}
+
+/* find work */
+var lastSkill=null;
+function renderSkills(){$("skills").innerHTML=Object.keys(J).map(k=>`<button class="chip big" onclick="jobs('${k}')">${IC[k]} ${tx(k)}</button>`).join("")}
+function listen(){const m=$("mic");m.classList.add("live");$("say").textContent=t("w_listen");setTimeout(()=>{m.classList.remove("live");jobs("Tailor")},1400)}
+function jobs(s){lastSkill=s;$("say").textContent=t("w_show")+tx(s);
+ $("jobs").innerHTML=J[s].map(j=>{const v=txJob(j);return `<div class="card"><h3>${IC[s]} ${v[0]}<span class="badge">${t("verified")}</span></h3><p>📍 ${v[1]}</p><p>💰 ${v[2]}</p><button class="btn" onclick="this.textContent=t('contacting')">${t("contact")}</button></div>`}).join("")
+ +(UP[s]?`<div class="card"><h3>${t("up_h")}</h3><button class="btn alt" onclick="learn('${UP[s]}');go('learn')">${t("up_b").replace("{s}",tx(UP[s]))}</button></div>`:"")}
+
+/* scholarships */
+var sholShown=false;
+function schol(){sholShown=true;const l=$("lvl").selectedIndex,low=$("inc").selectedIndex<2;
+ const all=[["sc0","lv_school",low],["sc1","lv_hs",low],["sc2","lv_col",low],["sc3","lv_all",true]];
+ const r=all.filter((x,i)=>x[2]&&(i===3||i===l));
+ $("smatch").innerHTML=r.length?r.map(x=>`<div class="card"><h3>${t(x[0])}</h3><p>${t("for_")}${t(x[1])}</p><p>${t("sc_help")}</p></div>`).join(""):`<div class="card"><p>${t("sc_none")}</p></div>`}
+const GOV=["National Means-cum-Merit Scholarship","Pre-Matric and Post-Matric (SC, ST, OBC)","Minorities: Post-Matric and Merit-cum-Means","PM YASASVI (OBC, EBC, DNT)","Central Sector Scholarship (CSSS)","Top-class education for students with disabilities"];
+const B4S="https://www.buddy4study.com";
+const PVT=[["Reliance Foundation Scholarships","pd0","https://scholarships.reliancefoundation.org/"],["Tata Capital Pankh","pd1",B4S],["HDFC Bank Parivartan ECSS","pd2",B4S],["Kotak Kanya Scholarship","pd3",B4S],["Infosys Foundation STEM Stars","pd4",B4S]];
+function renderReal(){
+ $("sreal").innerHTML=`<div class="card" style="background:#0B2545;color:#fff"><h3>${t("nsp_h")}</h3><p style="color:#cbd5e1">${t("nsp_p")}</p>${lk("https://scholarships.gov.in",t("nsp_b"),"alt")}</div><h3 style="margin:14px 0 8px">${t("gov_h")}</h3>`
+ +GOV.map((g,i)=>`<div class="card"><h3>${g}</h3><p>${t("gd"+i)}</p></div>`).join("")
+ +`<p class="say">${t("state_note")}</p><h3 style="margin:14px 0 8px">${t("pvt_h")}</h3>`
+ +PVT.map(p=>`<div class="card"><h3>${p[0]}</h3><p>${t(p[1])}</p>${lk(p[2],p[2]===B4S?t("b_b4s"):t("b_official"))}</div>`).join("")
+ +`<p class="say">${t("confirm_note")}</p>`}
+
+/* free courses */
+var lastLearn=null;
+function learnChips(){$("lchips").innerHTML=Object.keys(CR).map(k=>`<button class="chip big ${k===lastLearn?"on":""}" onclick="learn('${k}')">${IC[k]} ${tx(k)}</button>`).join("")}
+function learn(s){lastLearn=s;learnChips();
+ if(!s||!CR[s]){$("lres").innerHTML="";return}
+ const c=CR[s];
+ const sid=(q,h)=>`<div class="card">${h?`<h3>${IC[s]} ${tx(s)}</h3>`:""}<p>${t("l_search")}</p><p style="font-size:18px;font-weight:700;color:var(--ink)">${q}</p>${lk(SIDH,t("l_open"),"alt")}</div>`;
+ $("lres").innerHTML=c.s==="yt"
+  ?`<div class="card"><h3>${IC[s]} ${tx(s)}</h3><p>${t("l_yt_p")}</p>${lk("https://www.youtube.com/results?search_query="+encodeURIComponent(c.q+YTL[cur]),t("l_yt_b"),"alt")}</div>`+(c.d?sid(c.d,false):"")
+  :sid(c.q,true)}
+
+/* emergency */
+var esent=false;
+function esend(){if(!$("econ").checked){$("estat").innerHTML=`<div class="card"><p style="color:var(--red)">${t("c_need")}</p></div>`;return}
+ esent=true;renderE()}
+function renderE(){if(!esent)return;$("estat").innerHTML=`<div class="card"><h3>${t("e_ok")}</h3><p>${t(ek[$("etype").selectedIndex])} · ${$("eamt").textContent}</p><p>${t("e_s1")}</p><p>${t("e_s2")}</p><p>${t("e_s3")}</p></div>`}
+
+/* helpline (IVR) simulation */
+const IV={
+consent:["Before we start: to help you, a volunteer may ask your name, skill and area. Your details are shared only with the NGO help desk, and with employers only if you agree. Press 1 to agree. Press 2 to continue without sharing details.","शुरू करने से पहले: आपकी मदद के लिए स्वयंसेवक आपका नाम, हुनर और इलाका पूछ सकता है। आपकी जानकारी सिर्फ़ एनजीओ हेल्प डेस्क के पास रहेगी, और नियोक्ता को तभी दी जाएगी जब आप हाँ कहेंगे। सहमत होने के लिए 1 दबाएँ। जानकारी दिए बिना आगे बढ़ने के लिए 2 दबाएँ।","தொடங்கும் முன்: உங்களுக்கு உதவ, தன்னார்வலர் உங்கள் பெயர், திறன் மற்றும் பகுதியைக் கேட்கலாம். உங்கள் விவரங்கள் என்ஜிஓ உதவி மையத்துடன் மட்டுமே பகிரப்படும்; நீங்கள் ஒப்புக்கொண்டால் மட்டுமே வேலை வழங்குபவர்களுடன் பகிரப்படும். ஒப்புக்கொள்ள 1 ஐ அழுத்தவும். விவரங்களைப் பகிராமல் தொடர 2 ஐ அழுத்தவும்."],
+main:["Main menu. Press 1 for jobs. Press 2 for scholarships. Press 3 for emergency help. Press 4 for free skill courses. Press 0 to talk to a volunteer.","मुख्य मेनू। काम के लिए 1 दबाएँ। छात्रवृत्ति के लिए 2। आपातकालीन मदद के लिए 3। मुफ़्त कौशल कोर्स के लिए 4। स्वयंसेवक से बात करने के लिए 0 दबाएँ।","முதன்மை மெனு. வேலைக்கு 1 ஐ அழுத்தவும். உதவித்தொகைக்கு 2. அவசர உதவிக்கு 3. இலவச திறன் படிப்புகளுக்கு 4. தன்னார்வலரிடம் பேச 0 ஐ அழுத்தவும்."],
+jobs:["Jobs. Press 1 for tailor. Press 2 for driver. Press 3 for house help. Press 4 for cook. Press star for the main menu.","काम। दर्जी के लिए 1 दबाएँ। ड्राइवर के लिए 2। घरेलू सहायक के लिए 3। रसोइया के लिए 4। मुख्य मेनू के लिए स्टार दबाएँ।","வேலை. தையல்காரருக்கு 1 ஐ அழுத்தவும். ஓட்டுநருக்கு 2. வீட்டு வேலைக்கு 3. சமையலருக்கு 4. முதன்மை மெனுவுக்கு நட்சத்திரம் அழுத்தவும்."],
+job:["Nearby job: {t}, {a}, {p}. NGO verified. Press 9 to call the employer. Press star for the main menu.","पास का काम: {t}, {a}, {p}। एनजीओ द्वारा सत्यापित। नियोक्ता को फ़ोन करने के लिए 9 दबाएँ। मुख्य मेनू के लिए स्टार दबाएँ।","அருகிலுள்ள வேலை: {t}, {a}, {p}. என்ஜிஓ சரிபார்த்தது. வேலை வழங்குபவரை அழைக்க 9 ஐ அழுத்தவும். முதன்மை மெனுவுக்கு நட்சத்திரம் அழுத்தவும்."],
+emp:["Connecting you to the employer. (demo) Press star for the main menu.","आपको नियोक्ता से जोड़ रहे हैं। (डेमो) मुख्य मेनू के लिए स्टार दबाएँ।","வேலை வழங்குபவருடன் இணைக்கிறோம். (டெமோ) முதன்மை மெனுவுக்கு நட்சத்திரம் அழுத்தவும்."],
+schol:["Scholarships. Most government scholarships are on the National Scholarship Portal, and every scheme has its own last date. A volunteer can check which ones match your family and help you apply. Press 0 for a volunteer. Press star for the main menu.","छात्रवृत्ति। ज़्यादातर सरकारी छात्रवृत्तियाँ राष्ट्रीय छात्रवृत्ति पोर्टल पर हैं, और हर योजना की अपनी आख़िरी तारीख होती है। स्वयंसेवक देख सकता है कि आपके परिवार के लिए कौन-सी योजना सही है और आवेदन में मदद कर सकता है। स्वयंसेवक के लिए 0 दबाएँ। मुख्य मेनू के लिए स्टार दबाएँ।","உதவித்தொகை. பெரும்பாலான அரசு உதவித்தொகைகள் தேசிய உதவித்தொகை இணையதளத்தில் உள்ளன; ஒவ்வொரு திட்டத்திற்கும் அதன் சொந்த கடைசி தேதி உண்டு. உங்கள் குடும்பத்திற்கு எந்தத் திட்டம் பொருந்தும் என்று தன்னார்வலர் பார்த்து விண்ணப்பிக்க உதவலாம். தன்னார்வலருக்கு 0 ஐ அழுத்தவும். முதன்மை மெனுவுக்கு நட்சத்திரம் அழுத்தவும்."],
+emerg:["Emergency help. Press 1 for medical. Press 2 for accident. Press 3 for food shortage. Press star for the main menu.","आपातकालीन मदद। इलाज के लिए 1 दबाएँ। दुर्घटना के लिए 2। खाने की कमी के लिए 3। मुख्य मेनू के लिए स्टार दबाएँ।","அவசர உதவி. மருத்துவத்திற்கு 1 ஐ அழுத்தவும். விபத்துக்கு 2. உணவுப் பற்றாக்குறைக்கு 3. முதன்மை மெனுவுக்கு நட்சத்திரம் அழுத்தவும்."],
+ec:["To send an emergency request, we need your permission to share it with the NGO help desk. Press 1 to agree. Press 0 to talk to a volunteer. Press star for the main menu.","आपातकालीन अनुरोध भेजने के लिए हमें इसे एनजीओ हेल्प डेस्क के साथ साझा करने की आपकी अनुमति चाहिए। सहमत होने के लिए 1 दबाएँ। स्वयंसेवक से बात करने के लिए 0। मुख्य मेनू के लिए स्टार दबाएँ।","அவசர கோரிக்கையை அனுப்ப, அதை என்ஜிஓ உதவி மையத்துடன் பகிர உங்கள் அனுமதி தேவை. ஒப்புக்கொள்ள 1 ஐ அழுத்தவும். தன்னார்வலரிடம் பேச 0. முதன்மை மெனுவுக்கு நட்சத்திரம் அழுத்தவும்."],
+eok:["Your request is noted and goes to the NGO help desk for verification. A volunteer will call you back. Press star for the main menu.","आपका अनुरोध दर्ज हो गया है और जाँच के लिए एनजीओ हेल्प डेस्क को जा रहा है। स्वयंसेवक आपको वापस फ़ोन करेगा। मुख्य मेनू के लिए स्टार दबाएँ।","உங்கள் கோரிக்கை பதிவாகி சரிபார்ப்புக்காக என்ஜிஓ உதவி மையத்திற்குச் செல்கிறது. தன்னார்வலர் உங்களை மீண்டும் அழைப்பார். முதன்மை மெனுவுக்கு நட்சத்திரம் அழுத்தவும்."],
+learn:["Free skill courses. Government training can help you earn more. A volunteer can help you register on the Skill India Digital Hub and check if you qualify for free training. Press 0 for a volunteer. Press star for the main menu.","मुफ़्त कौशल कोर्स। सरकारी प्रशिक्षण से आप ज़्यादा कमा सकते हैं। स्वयंसेवक आपको स्किल इंडिया डिजिटल हब पर रजिस्टर करने और मुफ़्त प्रशिक्षण की पात्रता देखने में मदद कर सकता है। स्वयंसेवक के लिए 0 दबाएँ। मुख्य मेनू के लिए स्टार दबाएँ।","இலவச திறன் படிப்புகள். அரசு பயிற்சி நீங்கள் அதிகம் சம்பாதிக்க உதவும். ஸ்கில் இந்தியா டிஜிட்டல் ஹப்பில் பதிவு செய்யவும், இலவசப் பயிற்சிக்குத் தகுதி உள்ளதா என்று பார்க்கவும் தன்னார்வலர் உதவலாம். தன்னார்வலருக்கு 0 ஐ அழுத்தவும். முதன்மை மெனுவுக்கு நட்சத்திரம் அழுத்தவும்."],
+voly:["Please wait. A volunteer from the NGO help desk will call you in a few minutes. They will ask your name, skill and area, and create your profile only with your permission. You can ask them to delete it at any time. Press star for the main menu.","कृपया प्रतीक्षा करें। एनजीओ हेल्प डेस्क का स्वयंसेवक कुछ मिनट में आपको फ़ोन करेगा। वह आपका नाम, हुनर और इलाका पूछेगा और आपकी अनुमति से ही आपकी प्रोफ़ाइल बनाएगा। आप कभी भी उसे हटाने को कह सकते हैं। मुख्य मेनू के लिए स्टार दबाएँ।","தயவுசெய்து காத்திருக்கவும். என்ஜிஓ உதவி மையத்தின் தன்னார்வலர் சில நிமிடங்களில் உங்களை அழைப்பார். அவர் உங்கள் பெயர், திறன் மற்றும் பகுதியைக் கேட்டு, உங்கள் அனுமதியுடன் மட்டுமே சுயவிவரத்தை உருவாக்குவார். எப்போது வேண்டுமானாலும் அதை நீக்கச் சொல்லலாம். முதன்மை மெனுவுக்கு நட்சத்திரம் அழுத்தவும்."],
+voln:["Please wait. A volunteer will call you in a few minutes. You chose not to share details, so they will only answer your questions. Press star for the main menu.","कृपया प्रतीक्षा करें। स्वयंसेवक कुछ मिनट में आपको फ़ोन करेगा। आपने जानकारी साझा न करने का चुनाव किया है, इसलिए वह सिर्फ़ आपके सवालों के जवाब देगा। मुख्य मेनू के लिए स्टार दबाएँ।","தயவுசெய்து காத்திருக்கவும். தன்னார்வலர் சில நிமிடங்களில் உங்களை அழைப்பார். நீங்கள் விவரங்களைப் பகிர வேண்டாம் என்று தேர்ந்தெடுத்ததால், அவர் உங்கள் கேள்விகளுக்கு மட்டும் பதிலளிப்பார். முதன்மை மெனுவுக்கு நட்சத்திரம் அழுத்தவும்."],
+bad:["Sorry, that key is not on the menu. Press # to hear it again.","माफ़ कीजिए, यह बटन मेनू में नहीं है। दोबारा सुनने के लिए # दबाएँ।","மன்னிக்கவும், இந்த எண் மெனுவில் இல்லை. மீண்டும் கேட்க # ஐ அழுத்தவும்."]
+};
+const JK={"1":"Tailor","2":"Driver","3":"Housemaid","4":"Cook"};
+var ivS="off",ivL=0,ivC=null,ivX=null;
+function ivrParts(){
+ if(ivS==="ring")return [[t("c_ring"),SR[cur]]];
+ if(ivS==="lang")return [["SkillBridge. தமிழுக்கு 1 ஐ அழுத்தவும்.","ta-IN"],["हिंदी के लिए 2 दबाएँ।","hi-IN"],["For English, press 3.","en-IN"]];
+ var m;
+ if(ivS==="job"){const v=txJob(J[ivX][0],ivL);m=IV.job[ivL].replace("{t}",v[0]).replace("{a}",v[1]).replace("{p}",v[2])}
+ else if(ivS==="vol")m=(ivC?IV.voly:IV.voln)[ivL];
+ else m=IV[ivS][ivL];
+ return [[m,LC[ivL]]]
+}
+function ivShow(bad){const p=ivrParts();if(bad)p.unshift([IV.bad[ivL],LC[ivL]]);$("ivr").innerHTML="📞 "+p.map(x=>x[0]).join("<br>");say(p)}
+function ivIdle(){if(ivS==="off")$("ivr").textContent="📵 "+t("c_idle")}
+function ivStart(){ivS="ring";ivC=null;ivL=0;$("kp").classList.remove("hide");$("cbtn").classList.add("hide");$("cend").classList.remove("hide");ivShow();setTimeout(()=>{if(ivS==="ring"){ivS="lang";ivShow()}},1800)}
+function ivEnd(){ivS="off";try{speechSynthesis.cancel()}catch(e){}$("kp").classList.add("hide");$("cbtn").classList.remove("hide");$("cend").classList.add("hide");ivIdle()}
+function ivrKey(k){
+ if(ivS==="off"||ivS==="ring")return;
+ var bad=false;
+ if(k==="#"){}
+ else if(ivS==="lang"){if(k==="1")ivL=2;else if(k==="2")ivL=1;else if(k==="3")ivL=0;else bad=true;if(!bad)ivS="consent"}
+ else if(ivS==="consent"){if(k==="1"){ivC=true;ivS="main"}else if(k==="2"){ivC=false;ivS="main"}else if(k==="0")ivS="vol";else bad=true}
+ else if(k==="*")ivS="main";
+ else if(k==="0")ivS="vol";
+ else if(ivS==="main"){if(k==="1")ivS="jobs";else if(k==="2")ivS="schol";else if(k==="3")ivS=ivC?"emerg":"ec";else if(k==="4")ivS="learn";else bad=true}
+ else if(ivS==="jobs"){if(JK[k]){ivX=JK[k];ivS="job"}else bad=true}
+ else if(ivS==="job"){if(k==="9")ivS="emp";else bad=true}
+ else if(ivS==="emerg"){if(k==="1"||k==="2"||k==="3")ivS="eok";else bad=true}
+ else if(ivS==="ec"){if(k==="1"){ivC=true;ivS="emerg"}else bad=true}
+ else bad=true;
+ ivShow(bad)
+}
+$("kp").innerHTML=["1","2","3","4","5","6","7","8","9","*","0","#"].map(k=>`<button class="key" onclick="ivrKey('${k}')">${k}</button>`).join("");
+
+/* AI voice assistant (demo keyword matching) */
+function aiText(){$("aih").textContent="🤖 "+t("ai_h");$("aid").textContent=t("ai_d");$("aihint").textContent=t("ai_hint");$("aitxt").placeholder=t("ai_ph");$("aisend").textContent=t("ai_send");
+ $("aiq").innerHTML=t("ai_q").map((q,i)=>`<button class="chip" onclick="ask(this.textContent,${i})">${q}</button>`).join("")}
+function aiListen(){const m=$("aimic");const SRC=window.SpeechRecognition||window.webkitSpeechRecognition;if(SRC){try{const r=new SRC();r.lang=SR[cur];m.classList.add("live");r.onresult=e=>ask(e.results[0][0].transcript);r.onend=()=>m.classList.remove("live");r.start();return}catch(e){m.classList.remove("live")}}m.classList.add("live");setTimeout(()=>{m.classList.remove("live");ask(t("ai_q")[0],0)},1400)}
+function ask(x0,i){if(!x0)return;const x=x0.toLowerCase();var k=i;
+ if(k===undefined){k=3;
+  if(/learn|course|training|सीख|कोर्स|प्रशिक्षण|ट्रेनिंग|கற்க|கற்று|பயிற்சி|கோர்ஸ்/.test(x))k=4;
+  else if(/scholar|study|school|college|daughter|son\b|education|छात्रवृत्ति|पढ़ाई|स्कूल|बेटी|உதவித்தொகை|படிப்பு|பள்ளி|மகள்/.test(x))k=1;
+  else if(/money|hospital|medical|accident|emergency|food|sick|पैसे|अस्पताल|दवा|आपातकाल|खाना|பணம்|மருத்துவமனை|அவசர|உணவு/.test(x))k=2;
+  else if(/tailor|stitch|work|job|maid|garden|driver|cook|paint|electric|plumb|guard|deliver|काम|नौकरी|दर्जी|सिलाई|வேலை|தையல்/.test(x))k=0}
+ const to=["work","schol","emerg","call","learn"][k],r=t("ai_r")[k];
+ const u=x0.replace(/[<>&]/g,"");
+ $("aichat").innerHTML=`<div class="card"><p><b>${t("ai_you")}:</b> ${u}</p><p><b>${t("ai_bot")}:</b> ${r}</p><button class="btn" onclick="go('${to}')">${t("ai_open")}</button></div>`+$("aichat").innerHTML;$("aitxt").value="";
+ say([[r,SR[cur]]])}
+
+/* provider pages (employer, sponsor, NGO, community) stay in English */
+let pool=50000,vc=0;
+const REQ=[["Medical",3000,"Ward 4"],["Food shortage",1500,"Ward 2"],["Accident",5000,"Ward 6"]];
+const NQ=[["Worker: Lakshmi (Tailor)","Ward 4"],["Employer: Sri Tailors","Market road"],["Worker: Ravi (Driver)","Ward 6"],["Employer: Green Colony House","Green Colony"]];
+const inr=n=>"₹"+n.toLocaleString("en-IN");
+let ngoIn=false;
+function role(r){if(r==="w")go("home");else{go("prov");pTab("e")}}
+function pTab(x){$("ptabs").innerHTML=(ngoIn?[["e","Employer"],["s","Sponsor"],["n","NGO / Volunteer"]]:[["e","Employer"],["s","Sponsor"]]).map(y=>`<button class="chip ${y[0]===x?"on":""}" onclick="pTab('${y[0]}')">${y[1]}</button>`).join("");$("pv").innerHTML=x==="e"?empH():x==="s"?spH():ngoIn?ngH():ngLogin()}
+function empH(){return `<div class="card"><h3>Post a job</h3><p>Role</p><select id="jr">${Object.keys(J).map(k=>`<option>${k}</option>`).join("")}</select><p>Area</p><input type="text" id="ja" placeholder="e.g. Ward 4" style="width:100%"><p>Pay</p><input type="text" id="jp" placeholder="e.g. ₹500/day" style="width:100%"><button class="btn" onclick="postJob()">Post job</button></div><div id="pj"></div>`}
+function postJob(){const r=$("jr").value,a=$("ja").value.replace(/[<>&]/g,""),p=$("jp").value.replace(/[<>&]/g,"");if(!a||!p)return;J[r].unshift([r+" needed",a+" · new",p]);$("pj").innerHTML=`<div class="card"><h3>Posted ✅</h3><p>${r} · ${a} · ${p}</p><p>Sent to the NGO partner for verification. Nearby workers will see it under Find Work (shown instantly in this demo).</p><p><b>Applicants so far: 0</b></p></div>`+$("pj").innerHTML;$("ja").value="";$("jp").value=""}
+function spH(){return `<div class="card" style="background:#0B2545;color:#fff"><h3>Your sponsor fund</h3><p style="color:#cbd5e1">Available: <b id="pool">${inr(pool)}</b></p></div><h3 style="margin:12px 0 8px">Emergency requests (verified by NGO)</h3>`+REQ.map((r,i)=>`<div class="card"><h3>${r[0]} · ${inr(r[1])}</h3><p>📍 ${r[2]}</p><button class="btn" onclick="appr(this,${i})">Approve</button></div>`).join("")+`<h3 style="margin:12px 0 8px">Sponsor a student</h3><div class="card"><p>Cover one term of school fees for a child.</p><button class="btn alt" onclick="this.textContent='Thank you! Sponsorship noted (demo)'">Sponsor ₹5,000</button></div>`}
+function appr(b,i){if(REQ[i][1]>pool){b.textContent="Not enough funds";return}pool-=REQ[i][1];$("pool").textContent=inr(pool);b.textContent="Approved ✅ money sent";b.disabled=true}
+function ngH(){return `<div class="card" style="background:#0B2545;color:#fff"><h3>Verification queue</h3><button class="chip" onclick="ngoIn=false;pTab('e')">Log out</button><p style="color:#cbd5e1">Verified today: <b id="vc">${vc}</b></p></div>`+NQ.map(q=>`<div class="card"><h3>${q[0]}</h3><p>📍 ${q[1]}</p><div style="display:flex;gap:8px"><button class="btn" onclick="ver(this,1)">Verify</button><button class="btn red" onclick="ver(this,0)">Reject</button></div></div>`).join("")}
+function menu(o){$("drawer").classList.toggle("open",!!o)}
+function ngLogin(){return `<div class="card"><h3>🔒 NGO partners and volunteers only</h3><p>Enter the access code given by your NGO to verify workers and employers.</p><input type="password" id="npin" placeholder="Access code" style="width:100%;padding:10px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:15px;margin:8px 0"><button class="btn" onclick="ngLog()">Log in</button><p id="nerr" style="color:var(--red)"></p><p class="say">Demo code: NGO2026</p></div>`}
+function ngLog(){if($("npin").value==="NGO2026"){ngoIn=true;pTab("n")}else $("nerr").textContent="Wrong code. Only NGO partners and volunteers can enter."}
+function nav(p){menu(0);if(p==="h")role("w");else if(p==="s"){role("p");pTab("s")}else if(p==="e")role("p");else if(p==="n"){role("p");pTab("n")}else if(p==="c"){go("comm");$("comm").innerHTML=commH()}}
+function commH(){const c=(a,b,d)=>`<div class="card"><h3>${a}</h3><p>${b}</p>${d||""}</div>`;return `<div class="card" style="background:#0B2545;color:#fff"><h3>Community page</h3><p style="color:#cbd5e1">News, stories and volunteers from your area (sample data)</p></div><h3 style="margin:12px 0 8px">Announcements</h3>`+c("Scholarship help camp","Saturday 10 AM · Community hall · Volunteers will help fill forms.")+c("Free tailoring skill workshop","Next Monday · Ward 4 · Sponsored by a local NGO partner.")+`<h3 style="margin:12px 0 8px">Success stories</h3>`+c("Lakshmi, tailor","Found steady stitching orders through SkillBridge and now earns a regular monthly income.")+c("Ravi, driver","Got a verified job near home and used the emergency fund once for his mother's treatment.")+`<h3 style="margin:12px 0 8px">Join us</h3>`+c("Become a volunteer","Help families register, fill scholarship forms or run a village help desk.",`<button class="btn alt" onclick="this.textContent='Thank you! A coordinator will contact you (demo)'">I want to volunteer</button>`)}
+function ver(b,ok){if(ok){vc++;$("vc").textContent=vc}b.parentNode.innerHTML=ok?"<p>✅ Verified. Shows the NGO verified badge.</p>":"<p>❌ Rejected</p>"}
+
+setLang("English");
+</script>
+
+</body></html>
